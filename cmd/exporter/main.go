@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Seklfreak/jaeger-viewer/pkg/app"
+	"github.com/Seklfreak/jaeger-exporter/pkg/app"
 )
 
 var (
