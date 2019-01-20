@@ -1,7 +1,17 @@
 # jaeger-exporter
 Export Jaeger Traces to CSV.
 
+## Installing:
 ```
+go get github.com/Seklfreak/jaeger-exporter/cmd/jaeger-exporter
+go install github.com/Seklfreak/jaeger-exporter/cmd/jaeger-exporter
+```
+
+
+## Usage:
+```
+jaeger-exporter
+
   -filename string
     	filename to write to, eg output.csv (default "output.csv")
   -host string
