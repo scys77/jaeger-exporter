@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Seklfreak/jaeger-exporter/pkg/app"
+	"github.com/scys77/jaeger-exporter/pkg/app"
 )
 
 var (
@@ -16,6 +16,8 @@ var (
 	service  = ""
 	tags     = ""
 	filename = ""
+	username = ""
+	password = ""
 )
 
 func main() {
@@ -26,6 +28,8 @@ func main() {
 	flag.StringVar(&service, "service", "", "name of the service, eg example-service")
 	flag.StringVar(&tags, "tags", "", "tags to filter for, eg {\"foo\":\"bar\"}")
 	flag.StringVar(&filename, "filename", "output.csv", "filename to write to, eg output.csv")
+	flag.StringVar(&username, "username", "", "username for http basic auth")
+	flag.StringVar(&password, "password", "", "password for http basic auth")
 	flag.Parse()
 
 	// prepare http.Client
@@ -41,6 +45,8 @@ func main() {
 		lookback,
 		service,
 		tags,
+		username,
+		password,
 	)
 	if err != nil {
 		panic(err)

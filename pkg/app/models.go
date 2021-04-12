@@ -22,4 +22,5 @@ type Trace struct {
 // Span represents a span
 type Span struct {
 	json.Span
+	ServiceName string
 }

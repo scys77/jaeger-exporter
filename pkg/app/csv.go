@@ -2,20 +2,21 @@ package app
 
 import (
 	"encoding/csv"
+	"encoding/json"
 	"os"
 	"sort"
 	"strconv"
 )
 
 var (
-	headerSpanID          = "Span ID"
+	headerTraceID         = "Trace ID"
 	headerSuffixStartTime = "Start Time"
 	headerSuffixDuration  = "Duration"
 )
 
 // WriteToCSV writes the given Traces as a CSV to the filename
 func WriteToCSV(traces []*Trace, filename string) error {
-	uniqueSpanNames := getUniqueSpanKeys(traces)
+	// uniqueSpanNames := getUniqueSpanKeys(traces)
 
 	// prepare file
 	file, err := os.Create(filename)
@@ -28,14 +29,27 @@ func WriteToCSV(traces []*Trace, filename string) error {
 	defer writer.Flush()
 
 	// generate and write headers
-	headers := []string{headerSpanID}
-	for _, operationName := range uniqueSpanNames {
-		headers = append(
-			headers,
-			operationName+" "+headerSuffixStartTime,
-			operationName+" "+headerSuffixDuration,
-		)
-	}
+	headers := []string{}
+
+	headers = append(
+		headers,
+		"traceID",
+		"spanID",
+		"operationName",
+		"process.serviceName",
+		"references",
+		"tags",
+		"startTime",
+		"duration",
+	)
+
+	// for _, operationName := range uniqueSpanNames {
+	// 	headers = append(
+	// 		headers,
+	// 		operationName+" "+headerSuffixStartTime,
+	// 		operationName+" "+headerSuffixDuration,
+	// 	)
+	// }
 
 	err = writer.Write(headers)
 	if err != nil {
@@ -45,25 +59,48 @@ func WriteToCSV(traces []*Trace, filename string) error {
 	// generate and write lines
 	var line []string
 	for _, resultItem := range traces {
-		line = []string{resultItem.TraceID}
 
-		for _, operationName := range uniqueSpanNames {
-			span := resultItem.Spans[operationName]
+		for _, span := range resultItem.Spans {
+			line = []string{resultItem.TraceID}
+
 			if span == nil {
 				line = append(line, "", "")
 				continue
 			}
 
+			reference, _ := json.Marshal(span.References)
+			tags, _ := json.Marshal(span.Tags)
+
 			line = append(line,
+				// string(span.TraceID),
+				string(span.SpanID),
+				string(span.OperationName),
+				string(span.ServiceName),
+				string(reference),
+				string(tags),
 				strconv.FormatUint(span.StartTime, 10),
 				strconv.FormatUint(span.Duration, 10),
 			)
+
+			err = writer.Write(line)
+			if err != nil {
+				return err
+			}
 		}
 
-		err = writer.Write(line)
-		if err != nil {
-			return err
-		}
+		// for _, operationName := range uniqueSpanNames {
+		// 	span := resultItem.Spans[operationName]
+		// 	if span == nil {
+		// 		line = append(line, "", "")
+		// 		continue
+		// 	}
+
+		// 	line = append(line,
+		// 		strconv.FormatUint(span.StartTime, 10),
+		// 		strconv.FormatUint(span.Duration, 10),
+		// 	)
+		// }
+
 	}
 
 	return nil

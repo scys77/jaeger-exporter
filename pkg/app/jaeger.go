@@ -3,6 +3,7 @@ package app
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -14,7 +15,7 @@ var (
 )
 
 // JaegerSearchTraces searches Jaeger for Traces with the given parameters
-func JaegerSearchTraces(client *http.Client, host string, limit int, lookback, service, tags string) (*JaegerTracesResponse, error) {
+func JaegerSearchTraces(client *http.Client, host string, limit int, lookback, service, tags string, username string, password string) (*JaegerTracesResponse, error) {
 	endpoint, err := url.Parse(host + jaegerSearchTracesEndpoint)
 	if err != nil {
 		return nil, err
@@ -38,9 +39,25 @@ func JaegerSearchTraces(client *http.Client, host string, limit int, lookback, s
 		queries.Add("tags", tags)
 	}
 
+	if len(username) > 0 {
+		queries.Add("username", username)
+	}
+
+	if len(password) > 0 {
+		queries.Add("password", password)
+	}
+
 	endpoint.RawQuery = queries.Encode()
 
-	resp, err := client.Get(endpoint.String())
+	// resp, err := client.Get(endpoint.String())
+	req, err := http.NewRequest("GET", endpoint.String(), nil)
+	if err != nil {
+		return nil, fmt.Errorf("Got error %s", err.Error())
+	}
+
+	req.SetBasicAuth(username, password)
+	resp, err := client.Do(req)
+
 	if err != nil {
 		return nil, err
 	}
