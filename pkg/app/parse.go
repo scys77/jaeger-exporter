@@ -16,7 +16,7 @@ func GenerateTraceWithSpansMap(info *JaegerTracesResponse) []*Trace {
 		}
 
 		for _, span := range trace.Spans {
-			resultItem.Spans[spanKey(&span, &trace)] = &Span{span, getServiceName(&span, &trace)}
+			resultItem.Spans[spanKey(&span, &trace)] = &Span{span, getProcess(&span, &trace)}
 		}
 
 		traces = append(traces, resultItem)
@@ -34,6 +34,6 @@ func spanKey(span *json.Span, trace *json.Trace) string {
 	return name
 }
 
-func getServiceName(span *json.Span, trace *json.Trace) string {
-	return trace.Processes[span.ProcessID].ServiceName
+func getProcess(span *json.Span, trace *json.Trace) json.Process {
+	return trace.Processes[span.ProcessID]
 }

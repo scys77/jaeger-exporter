@@ -75,7 +75,7 @@ func WriteToCSV(traces []*Trace, filename string) error {
 				// string(span.TraceID),
 				string(span.SpanID),
 				string(span.OperationName),
-				string(span.ServiceName),
+				string(span.SpanProcess.ServiceName),
 				string(reference),
 				string(tags),
 				strconv.FormatUint(span.StartTime, 10),
