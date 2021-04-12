@@ -32,6 +32,7 @@ jaeger-exporter
 cd cmd/jaeger-exporter/
 go install
 
+cd ~
 ./go/bin/jaeger-exporter
 
     -filename string
