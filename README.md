@@ -3,8 +3,8 @@ Export Jaeger Traces to CSV.
 
 ## Installing:
 ```
-go get github.com/Seklfreak/jaeger-exporter/cmd/jaeger-exporter
-go install github.com/Seklfreak/jaeger-exporter/cmd/jaeger-exporter
+go get github.com/scys77/jaeger-exporter/cmd/jaeger-exporter
+go install github.com/scys77/jaeger-exporter/cmd/jaeger-exporter
 ```
 
 ## Usage:
