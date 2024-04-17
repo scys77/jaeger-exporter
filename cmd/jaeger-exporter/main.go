@@ -23,7 +23,7 @@ var (
 func main() {
 	// parse flags
 	flag.StringVar(&host, "host", "", "host of Jaeger, eg https://jaeger-query.company.com")
-	flag.IntVar(&limit, "limit", 20, "maximum number of items, eg 20")
+	flag.IntVar(&limit, "limit", 30, "maximum number of items, eg 30")
 	flag.StringVar(&lookback, "lookback", "2d", "timerange, eg 2d")
 	flag.StringVar(&service, "service", "", "name of the service, eg example-service")
 	flag.StringVar(&tags, "tags", "", "tags to filter for, eg {\"foo\":\"bar\"}")
