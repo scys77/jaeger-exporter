@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"os"
 	"fmt"
 	"net/http"
 	"time"
@@ -23,7 +24,7 @@ var (
 func main() {
 	// parse flags
 	flag.StringVar(&host, "host", "", "host of Jaeger, eg https://jaeger-query.company.com")
-	flag.IntVar(&limit, "limit", 20, "maximum number of items, eg 20")
+	flag.IntVar(&limit, "limit", 30, "maximum number of items, eg 30")
 	flag.StringVar(&lookback, "lookback", "2d", "timerange, eg 2d")
 	flag.StringVar(&service, "service", "", "name of the service, eg example-service")
 	flag.StringVar(&tags, "tags", "", "tags to filter for, eg {\"foo\":\"bar\"}")
@@ -31,6 +32,11 @@ func main() {
 	flag.StringVar(&username, "username", "", "username for http basic auth")
 	flag.StringVar(&password, "password", "", "password for http basic auth")
 	flag.Parse()
+
+	if limit <= 0 {
+		fmt.Println("The 'limit' parameter must be greater than 0.")
+		os.Exit(1)
+	}
 
 	// prepare http.Client
 	client := &http.Client{
