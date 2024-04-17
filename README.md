@@ -16,7 +16,7 @@ jaeger-exporter
   -host string
     	host of Jaeger, eg https://jaeger-query.company.com
   -limit int
-    	maximum number of items, eg 20 (default 20)
+    	maximum number of items, eg 30 (default 30)
   -lookback string
     	timerange, eg 2d (default "2d")
   -service string
@@ -40,7 +40,7 @@ cd ~
     -host string
         host of Jaeger, eg https://jaeger-query.company.com
     -limit int
-        maximum number of items, eg 20 (default 20)
+        maximum number of items, eg 30 (default 30)
     -lookback string
         timerange, eg 2d (default "2d")
     -password string
